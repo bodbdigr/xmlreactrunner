@@ -55,26 +55,24 @@ class App extends React.Component<{}, {}> {
     }, {});
   }
 
-  private processXml(doc: Document | Element) {
-    return Array.from(doc.children).map((node, idx) => {
+  private isTextNode(node: Node) {
+    return node.nodeType === 3;
+  }
+
+  private processXml(doc: Document | Node) {
+    return Array.from(doc.childNodes).map((node, idx) => {
+      if (this.isTextNode(node)) {
+        return node.textContent;
+      }
+
       const Component = validTags.indexOf(node.nodeName) !== -1 &&
                           node.nodeName
                           ||
                           xmlToComponentMap[node.nodeName];
 
-      if (node.nodeType === 3) {
-        return node.nodeValue;
-      }
-
-      console.log('component is', Component, node.textContent) //tslint:disable-line
-
       return (
-        <Component key={idx} {...this.nodeAttributesToDict(node)}>
-          {
-            node.children.length ?
-            this.processXml(node) :
-            node.textContent
-          }
+        <Component key={idx} {...this.nodeAttributesToDict(node as Element)}>
+          {this.processXml(node)}
         </Component>
       );
     });
