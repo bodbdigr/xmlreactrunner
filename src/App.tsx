@@ -20,6 +20,7 @@ const xml = `
     <h2>Sirui T 1205X</h2>
     <topbar format="simple">
       <menu_button />
+      <span>test <sub>bla</sub></span>
     </topbar>
   </block>
 `;
