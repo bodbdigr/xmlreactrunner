@@ -1,7 +1,8 @@
 
 import * as React from 'react';
+import { BlockHandler } from './nodeHandlers/block';
 
-const TopBar = ({ format, children }: {format: string, children: React.Component[]}) => {
+const TopBar:React.SFC<{format: string}> = ({ format, children })=> {
     return (
       <div>
       <div>This is Top bar {format}</div>
@@ -10,19 +11,22 @@ const TopBar = ({ format, children }: {format: string, children: React.Component
     )
 };
 
-const MenuButton = () => {
-  return <div>I'm the menu button for the god sake, stop it</div>
+const MenuButton:React.SFC = () => {
+  return <div>This is the menu button</div>
 };
 
 const xml = `
-  <topbar format="simple">
-    <menu_button />
-  </topbar>
+  <block name="Some Page">
+    <topbar format="simple">
+      <menu_button />
+    </topbar>
+  </block>
 `;
 
 const xmlToComponentMap = {
+  'block': BlockHandler,
   'menu_button': MenuButton,
-  'topbar': TopBar
+  'topbar': TopBar,
 };
 
 const parser = new DOMParser();
@@ -41,10 +45,10 @@ class App extends React.Component<{}, {}> {
   }
 
   private processXml(doc: Document | Element) {
-    return Array.from(doc.children).map(node => {
+    return Array.from(doc.children).map((node, idx) => {
       const Component = xmlToComponentMap[node.nodeName];
       return (
-        <Component key={1} {...this.nodeAttributesToDict(node)}>
+        <Component key={idx} {...this.nodeAttributesToDict(node)}>
           {this.processXml(node)}
         </Component>
       );
