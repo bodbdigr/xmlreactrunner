@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import { BlockHandler } from './nodeHandlers/block';
+import { DOMParser } from 'xmldom';
 
 const TopBar:React.SFC<{format: string}> = ({ format, children })=> {
     return (
