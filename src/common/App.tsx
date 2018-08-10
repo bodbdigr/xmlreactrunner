@@ -6,7 +6,7 @@ import { DOMParser } from 'xmldom';
 const TopBar:React.SFC<{format: string}> = ({ format, children })=> {
     return (
       <div>
-      <div>This is Top bar {format}</div>
+      <div>This is Top bar ({format})</div>
       {children}
       </div>
     )
